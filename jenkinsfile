@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/SatyamSatyarthi007/DevOps.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                dir('two-tier-app') {
+                    sh '/usr/bin/docker-compose build'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir('two-tier-app') {
+                    sh '/usr/bin/docker-compose down || true'
+                    sh '/usr/bin/docker-compose up -d'
+                }
+            }
+        }
+    }
+}
